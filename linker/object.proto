@@ -1,0 +1,45 @@
+syntax = "proto3";
+option go_package = "Sano/linker";
+
+message Object {
+	map<string, Fragment> fragments = 1;
+}
+
+message Fragment {
+	repeated Expression expressions = 1;
+}
+
+enum UnaryType {
+	ADD = 0;
+	SUBTRACT = 1;
+}
+
+enum SymbolSize {
+	WORD = 0;
+	BYTE = 1;
+	RELATIVE = 2;
+}
+
+message Expression {
+	message Literal {
+		bytes value = 1;
+	}
+	message Symbol {
+		string name = 1;
+		SymbolSize size = 2;
+	}
+	message Subsymbol {
+		string name = 1;
+	}
+	message Unary {
+		UnaryType kind = 1;
+		Expression value = 2;
+	}
+
+	oneof inner {
+		Literal literal = 1;
+		Symbol symbol = 2;
+		Unary unary = 3;
+		Subsymbol subsymbol = 4;
+	}
+}

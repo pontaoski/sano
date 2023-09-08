@@ -1,0 +1,30 @@
+@PokeSeed { }
+@seed1 { }
+
+@main {
+	stz =0x9F25;
+	lda #0x0B;
+	sta =0x9F20;
+	lda #0xFA;
+	sta =0x9F21;
+	lda #0x01;
+	sta =0x9F22;
+	lda #0x0A;
+	sta =0x9F23;
+	rts !;
+}
+
+@Seed1Between {
+	jsr =PokeSeed;
+
+	&ensureX:
+		cpx :seed1;
+		beq ~ensureY;
+		bcs ~Seed1Between;
+	&ensureY:
+		cpy :seed1;
+		beq ~done;
+		bcc ~Seed1Between;
+	&done:
+		rts !;
+}
